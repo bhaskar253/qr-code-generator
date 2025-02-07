@@ -4,39 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Code Generator</title>
+    <!-- Material Design Resources -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="theme-toggle">
-        <button onclick="setTheme('light')" class="theme-btn" title="Light Mode">☀️</button>
-        <button onclick="setTheme('dark')" class="theme-btn" title="Dark Mode">🌙</button>
-        <button onclick="setTheme('system')" class="theme-btn" title="System Theme">💻</button>
-    </div>
-    <div class="container">
-        <h1>QR Code Generator</h1>
-        <div class="input-section">
-            <div class="input-wrapper">
-                <input type="text" id="qr-text" placeholder="Enter text or URL" autofocus>
-                <div class="typing-indicator"></div>
-            </div>
+    <header class="top-app-bar">
+        <h1 class="mdc-typography--headline6">QR Code Generator</h1>
+        <div class="theme-toggle">
+            <button class="mdc-icon-button material-symbols-rounded" onclick="setTheme('light')" title="Light Mode">
+                light_mode
+            </button>
+            <button class="mdc-icon-button material-symbols-rounded" onclick="setTheme('dark')" title="Dark Mode">
+                dark_mode
+            </button>
+            <button class="mdc-icon-button material-symbols-rounded" onclick="setTheme('system')" title="System Theme">
+                devices
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <label class="mdc-text-field mdc-text-field--outlined">
+                <span class="mdc-notched-outline">
+                    <span class="mdc-notched-outline__leading"></span>
+                    <span class="mdc-notched-outline__notch">
+                        <span class="mdc-floating-label">Enter text or URL</span>
+                    </span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="text" class="mdc-text-field__input" id="qr-text" aria-label="Enter text or URL">
+            </label>
+
             <div class="size-control">
-                <label>Size: <span id="size-value">200</span>px</label>
-                <div class="slider-container">
-                    <span class="size-label">Small</span>
-                    <input type="range" id="qr-size" min="100" max="400" value="200" step="10">
-                    <span class="size-label">Large</span>
-                </div>
+                <label class="mdc-typography--subtitle1">Size: <span id="size-value">200</span>px</label>
+                <input type="range" class="size-slider" id="qr-size" min="100" max="400" value="200" step="10">
             </div>
+
+            <div class="qr-container" id="qr-code">
+                <span class="mdc-typography--body2">Type something to generate QR code</span>
+            </div>
+
+            <button class="mdc-button mdc-button--raised" id="download-btn" style="display: none;">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">Download QR Code</span>
+            </button>
         </div>
-        <div id="qr-code">
-            <div class="placeholder-text">Type something to generate QR code</div>
-        </div>
-        <div class="success-message" id="success-message">QR Code generated successfully!</div>
-        <button id="download-btn" onclick="downloadQR()" style="display: none;">
-            <span class="button-text">Download QR Code</span>
-            <div class="download-indicator"></div>
-        </button>
+    </main>
+
+    <div class="success-toast" id="success-message">
+        QR Code generated successfully!
     </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/material-components-web/14.0.0/material-components-web.min.js"></script>
     <script src="qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>

@@ -7,10 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="theme-toggle">
+        <button onclick="setTheme('light')" class="theme-btn" title="Light Mode">☀️</button>
+        <button onclick="setTheme('dark')" class="theme-btn" title="Dark Mode">🌙</button>
+        <button onclick="setTheme('system')" class="theme-btn" title="System Theme">💻</button>
+    </div>
     <div class="container">
         <h1>QR Code Generator</h1>
         <div class="input-section">
-            <input type="text" id="qr-text" placeholder="Enter text or URL" autofocus>
+            <div class="input-wrapper">
+                <input type="text" id="qr-text" placeholder="Enter text or URL" autofocus>
+                <div class="typing-indicator"></div>
+            </div>
             <div class="size-control">
                 <label>Size: <span id="size-value">200</span>px</label>
                 <div class="slider-container">
@@ -20,8 +28,14 @@
                 </div>
             </div>
         </div>
-        <div id="qr-code"></div>
-        <button id="download-btn" onclick="downloadQR()" style="display: none;">Download QR Code</button>
+        <div id="qr-code">
+            <div class="placeholder-text">Type something to generate QR code</div>
+        </div>
+        <div class="success-message" id="success-message">QR Code generated successfully!</div>
+        <button id="download-btn" onclick="downloadQR()" style="display: none;">
+            <span class="button-text">Download QR Code</span>
+            <div class="download-indicator"></div>
+        </button>
     </div>
     <script src="qrcode.min.js"></script>
     <script src="script.js"></script>

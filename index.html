@@ -10,7 +10,7 @@
     <div class="container">
         <h1>QR Code Generator</h1>
         <div class="input-section">
-            <input type="text" id="qr-text" placeholder="Enter text or URL">
+            <input type="text" id="qr-text" placeholder="Enter text or URL" autofocus>
             <div class="size-control">
                 <label>Size: <span id="size-value">200</span>px</label>
                 <div class="slider-container">
@@ -19,7 +19,6 @@
                     <span class="size-label">Large</span>
                 </div>
             </div>
-            <button onclick="generateQR()">Generate QR Code</button>
         </div>
         <div id="qr-code"></div>
         <button id="download-btn" onclick="downloadQR()" style="display: none;">Download QR Code</button>

@@ -1,5 +1,10 @@
 let qrInstance = null;
 
+// Update size value display when slider moves
+document.getElementById('qr-size').addEventListener('input', function() {
+    document.getElementById('size-value').textContent = this.value;
+});
+
 function generateQR() {
     const text = document.getElementById('qr-text').value;
     const size = document.getElementById('qr-size').value;

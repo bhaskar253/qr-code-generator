@@ -11,11 +11,14 @@
         <h1>QR Code Generator</h1>
         <div class="input-section">
             <input type="text" id="qr-text" placeholder="Enter text or URL">
-            <select id="qr-size">
-                <option value="100">Small</option>
-                <option value="200" selected>Medium</option>
-                <option value="300">Large</option>
-            </select>
+            <div class="size-control">
+                <label>Size: <span id="size-value">200</span>px</label>
+                <div class="slider-container">
+                    <span class="size-label">Small</span>
+                    <input type="range" id="qr-size" min="100" max="400" value="200" step="10">
+                    <span class="size-label">Large</span>
+                </div>
+            </div>
             <button onclick="generateQR()">Generate QR Code</button>
         </div>
         <div id="qr-code"></div>

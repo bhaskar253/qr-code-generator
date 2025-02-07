@@ -2,17 +2,18 @@ function generateQRCode() {
     const qrText = document.getElementById("qr-text").value;
     const qrcodeDiv = document.getElementById("qrcode");
 
-    // Clear previous QR code
-    qrcodeDiv.innerHTML = "";
+    qrcodeDiv.innerHTML = ""; // Clear previous QR code
 
     if (qrText.trim() === "") {
         alert("Please enter text or URL.");
         return;
     }
 
-    const qrcode = new QRCode(qrcodeDiv, {
+    // Use makeCode instead of new QRCode
+    const qrcode = qrcodeDiv.appendChild(document.createElement("div")); // Create a div inside the target div
+    new QRCode(qrcode, {
         text: qrText,
-        width: 200, // Adjust size as needed
+        width: 200,
         height: 200,
     });
 }

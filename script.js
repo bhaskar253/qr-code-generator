@@ -1,72 +1,52 @@
-document.addEventListener('DOMContentLoaded', function () {
-    let qrInstance = null;
+document.addEventListener("DOMContentLoaded", function () {
+    const qrText = document.getElementById("qr-text");
+    const qrSize = document.getElementById("qr-size");
+    const qrCodeContainer = document.getElementById("qr-code");
+    const successMessage = document.getElementById("success-message");
+    const downloadBtn = document.getElementById("download-btn");
 
-    // Materialize CSS init (if needed)
-    M.updateTextFields();
-
-    function showSuccessMessage() {
-        const message = document.getElementById('success-message');
-        message.style.display = 'block';
-        setTimeout(() => {
-            message.style.display = 'none';
-        }, 2000);
-    }
+    let qr = new QRCode(qrCodeContainer, {
+        text: "",
+        width: parseInt(qrSize.value),
+        height: parseInt(qrSize.value),
+    });
 
     function generateQR() {
-        const text = document.getElementById('qr-text').value.trim();
-        const size = document.getElementById('qr-size').value;
-        const qrContainer = document.getElementById('qr-code');
-        const downloadBtn = document.getElementById('download-btn');
+        let text = qrText.value.trim();
+        let size = parseInt(qrSize.value);
 
-        qrContainer.innerHTML = '';
-
-        if (!text) {
-            qrContainer.innerHTML = '<span class="grey-text">Type something to generate QR code</span>';
-            downloadBtn.style.display = 'none';
+        if (text === "") {
+            qrCodeContainer.innerHTML = `<span class="grey-text">Type something to generate QR code</span>`;
+            downloadBtn.style.display = "none";
+            successMessage.style.display = "none";
             return;
         }
 
-        try {
-            qrInstance = new QRCode(qrContainer, {
-                text: text,
-                width: parseInt(size),
-                height: parseInt(size),
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
-            });
+        qr.clear();
+        qr.makeCode(text);
 
-            downloadBtn.style.display = 'inline-block';
-            showSuccessMessage();
-        } catch (error) {
-            console.error('QR Code generation error:', error);
-            qrContainer.innerHTML = '<span class="red-text">Error generating QR code</span>';
-        }
+        qrCodeContainer.querySelector("img").style.width = size + "px";
+        qrCodeContainer.querySelector("img").style.height = size + "px";
+
+        successMessage.style.display = "block";
+        downloadBtn.style.display = "block";
     }
 
-    function downloadQR() {
-        if (!qrInstance) return;
+    qrText.addEventListener("input", generateQR);
+    qrSize.addEventListener("input", generateQR);
 
-        const img = document.querySelector('#qr-code img');
-        if (!img) return;
+    // Download QR Code
+    downloadBtn.addEventListener("click", function () {
+        let qrImage = qrCodeContainer.querySelector("img");
+        if (!qrImage) return;
 
-        const link = document.createElement('a');
-        link.href = img.src;
-        link.download = 'qrcode.png';
+        let link = document.createElement("a");
+        link.href = qrImage.src;
+        link.download = "QRCode.png";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    }
-
-    // Smooth slider updates
-    const qrSizeInput = document.getElementById('qr-size');
-    const sizeValueDisplay = document.getElementById('size-value');
-    qrSizeInput.addEventListener('input', function () {
-        requestAnimationFrame(() => {
-            sizeValueDisplay.textContent = this.value;
-            generateQR();
-        });
     });
 
-    document.getElementById('download-btn').addEventListener('click', downloadQR);
+    generateQR(); // Generate QR on page load if there's text
 });

@@ -1,16 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     let qrInstance = null;
-    let debounceTimer;
 
-    // Function to debounce QR code generation
-    function debounce(func, wait) {
-        return function () {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => func.apply(this, arguments), wait);
-        };
-    }
+    // Materialize CSS init (if needed)
+    M.updateTextFields();
 
-    // Show success message
     function showSuccessMessage() {
         const message = document.getElementById('success-message');
         message.style.display = 'block';
@@ -19,20 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 2000);
     }
 
-    // Update size value display when slider moves
-    document.getElementById('qr-size').addEventListener('input', function () {
-        document.getElementById('size-value').textContent = this.value;
-        generateQR();
-    });
-
-    // Generate QR code when user types
-    const qrInput = document.getElementById('qr-text');
-    qrInput.addEventListener('input', debounce(() => {
-        generateQR();
-    }, 300));
-
     function generateQR() {
-        const text = qrInput.value.trim();
+        const text = document.getElementById('qr-text').value.trim();
         const size = document.getElementById('qr-size').value;
         const qrContainer = document.getElementById('qr-code');
         const downloadBtn = document.getElementById('download-btn');
@@ -46,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            // Create new QR code
             qrInstance = new QRCode(qrContainer, {
                 text: text,
                 width: parseInt(size),
@@ -56,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 correctLevel: QRCode.CorrectLevel.H
             });
 
-            // Show download button and success message
             downloadBtn.style.display = 'inline-block';
             showSuccessMessage();
         } catch (error) {
@@ -78,6 +57,16 @@ document.addEventListener('DOMContentLoaded', function () {
         link.click();
         document.body.removeChild(link);
     }
+
+    // Smooth slider updates
+    const qrSizeInput = document.getElementById('qr-size');
+    const sizeValueDisplay = document.getElementById('size-value');
+    qrSizeInput.addEventListener('input', function () {
+        requestAnimationFrame(() => {
+            sizeValueDisplay.textContent = this.value;
+            generateQR();
+        });
+    });
 
     document.getElementById('download-btn').addEventListener('click', downloadQR);
 });
